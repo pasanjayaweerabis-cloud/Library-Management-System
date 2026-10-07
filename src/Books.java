@@ -9,7 +9,7 @@ public class Books extends Items {
     ArrayList<ArrayList<Object>> booksDataContainer = new ArrayList<>();
     ArrayList<Object> booksData = new ArrayList<>();
 
-    public void setData(String bookID,String bookTitle,String author){
+    public void addBook(String bookID,String bookTitle,String author){
 
         this.bookID = bookID;
         this.bookTitle = bookTitle;

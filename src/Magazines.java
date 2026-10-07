@@ -1,25 +1,25 @@
 import java.util.ArrayList;
 
 public class Magazines extends Items {
-        String magazineName;
-        int magazineCount;
-        String magazineID;
+       private String magazineName;
+       private int magazineCount;
+       private String magazineID;
 
 
-    ArrayList<ArrayList<Object>> magazineDataContainer = new ArrayList<>();
+    ArrayList<ArrayList<Object>> magazinesDataContainer = new ArrayList<>();
     ArrayList<Object> magazineData = new ArrayList<>();
 
-    public void setData(String magazineID,String magazineName){
+    public void addMagazine(String magazineID,String magazineName){
 
         this.magazineID = magazineID;
         this.magazineName = magazineName;
-        this.magazineCount = magazineDataContainer.size();
+        this.magazineCount = magazinesDataContainer.size();
 
         magazineData.add(magazineID);
         magazineData.add(magazineName);
         magazineData.add(magazineCount);
 
-        magazineDataContainer.add(magazineData);
+        magazinesDataContainer.add(magazineData);
 
     }
 
