@@ -1,171 +1,189 @@
 import java.util.Scanner;
 
-public class Main implements venomCodes {
+public class Main {
 
-    static Scanner sc = new Scanner(System.in);
-    static Books book = new Books();
-    static Magazines mag = new Magazines();
-    static Members mem = new Members();
-
-    public static void menu() {
-        System.out.println("===========================================================================================================================");
-        System.out.println("======  Library Management System  ===============================================\n");
-        System.out.println("1. Register as a member ");
-        System.out.println("2. Add a Book ");
-        System.out.println("3. Add a Magazine ");
-        System.out.println("4. Search an items  ");
-        System.out.println("5. Delete an items ");
-        System.out.println("6. Exit\n");
-    }
-
-    static public void addMember() {
-
-        System.out.println("\n==== Adding a new member =====\n");
-        System.out.println("New member ID: " + mem.getMemberID());
-
-        System.out.print("Enter member Name: ");
-        String memberName = sc.nextLine();
-        System.out.print("Enter member Email: ");
-        String memberEmail = sc.nextLine();
-
-        System.out.println(mem.addMember(memberName, memberEmail));
-    }
-
-    static public void addBook() {
-
-        System.out.println("\n==== Adding a new Book =====\n");
-        System.out.println("New book ID: " + book.getBookID());
-
-        System.out.print("Enter book Title: ");
-        String bookTitle = sc.nextLine();
-        System.out.print("Enter author: ");
-        String bookAuthor = sc.nextLine();
-
-        System.out.println(book.addBook(bookTitle, bookAuthor));
-    }
-
-    static public void addMagazine() {
-
-        System.out.println("\n==== Adding a new Magazine =====\n");
-        System.out.println("New magazine ID: " + mag.getMagazineID());
-
-        System.out.print("Enter magazine Name: ");
-        String magazineName = sc.nextLine();
-        System.out.print("Enter magazine Provider: ");
-        String magazineProvider = sc.nextLine();
-
-        System.out.println(mag.addMagazine(magazineName, magazineProvider));
-    }
-
-    static public void searchMember() {
-        System.out.println("Enter member ID : (Ex: M0001)");
-        String lookMemberID = sc.nextLine();
-
-        mem.searchMember(lookMemberID);
-    }
-
-    static public void searchBook() {
-        System.out.println("Enter Book ID : (Ex: B0001)");
-        String lookBookID = sc.nextLine();
-
-        book.searchBook(lookBookID);
-    }
-
-    static public void searchMagazine() {
-        System.out.println("Enter magazine ID : (Ex: Mgz001)");
-        String lookMagazineID = sc.nextLine();
-
-        mag.searchMagazine(lookMagazineID);
-    }
-
-    static public void deleteMember() {
-        System.out.println("Enter member ID : (Ex: M0001)");
-        String targetMemberID = sc.nextLine();
-
-        mem.deleteMember(targetMemberID);
-    }
-
-    static public void deleteBook() {
-        System.out.println("Enter Book ID : (Ex: B0001)");
-        String targetBookID = sc.nextLine();
-
-        book.deleteBook(targetBookID);
-    }
-
-    static public void deleteMagazine() {
-        System.out.println("Enter magazine ID : (Ex: Mgz001)");
-        String targetMagazineID = sc.nextLine();
-
-        mag.deleteMagazine(targetMagazineID);
-    }
-
-    @Override
-    public void adminMode() {
-        System.out.println("Pasan");
-    }
-
-    static public void exit() {
-        System.out.println("Exiting Library Management System...");
-    }
-
-////////////////////////////////////////////////////////////////////////////////////////////////
+    private static final Scanner sc = new Scanner(System.in);
+    private static final Library library = new Library();
 
     public static void main(String[] args) {
 
-        while (true) {
-            menu();
-            System.out.println("Select the choice number : ");
-            int userChoice = sc.nextInt();
-            sc.nextLine();
+        boolean running = true;
 
-            if (userChoice == 1) {
-                addMember();
-            } else if (userChoice == 2) {
-                addBook();
-            } else if (userChoice == 3) {
-                addMagazine();
-            } else if (userChoice == 4) {
+        while (running) {
+            showMenu();
+            int choice = readInt("Select the choice number: ");
 
-                System.out.println("-----Enter Choice number-----\n");
-                System.out.print("1.Search Member");
-                System.out.print("2.Search Book");
-                System.out.print("3.Search Magazine\n");
-
-                System.out.println("Choice number : ");
-                int searchNum = sc.nextInt();
-                sc.nextLine();
-
-                if (searchNum == 1) {
-                    searchMember();
-                } else if (searchNum == 2) {
-                    searchBook();
-                } else if (searchNum == 3) {
-                    searchMagazine();
+            switch (choice) {
+                case 1 -> registerMember();
+                case 2 -> addBook();
+                case 3 -> addMagazine();
+                case 4 -> search();
+                case 5 -> delete();
+                case 6 -> library.showAllItems();
+                case 7 -> library.showAllMembers();
+                case 8 -> {
+                    System.out.println("Exiting Library Management System...");
+                    running = false;
                 }
-
-            } else if (userChoice == 5) {
-
-                System.out.println("-----Enter Choice number-----\n");
-                System.out.print("1.Delete Member");
-                System.out.print("2.Delete Book");
-                System.out.print("3.Delete Magazine\n");
-
-                System.out.println("Enter the Number : ");
-                int deleteNum = sc.nextInt();
-                sc.nextLine();
-
-                if (deleteNum == 1) {
-                    deleteMember();
-                } else if (deleteNum == 2) {
-                    deleteBook();
-                } else if (deleteNum == 3) {
-                    deleteMagazine();
-                }
-
-            } else if (userChoice == 6) {
-                exit();
-                break;
+                default -> System.out.println("Invalid choice. Enter 1-8.");
             }
+        }
+    }
+
+    // ---------- menu ----------
+
+    private static void showMenu() {
+        System.out.println("\n==========================================");
+        System.out.println("       Library Management System");
+        System.out.println("==========================================");
+        System.out.println("1. Register a member");
+        System.out.println("2. Add a book");
+        System.out.println("3. Add a magazine");
+        System.out.println("4. Search");
+        System.out.println("5. Delete");
+        System.out.println("6. Show all items");
+        System.out.println("7. Show all members");
+        System.out.println("8. Exit");
+    }
+
+    // ---------- input helpers ----------
+
+    private static int readInt(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = sc.nextLine().trim();
+            try {
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a number.");
+            }
+        }
+    }
+
+    private static String readLine(String prompt) {
+        System.out.print(prompt);
+        return sc.nextLine();
+    }
+
+    private static boolean confirm(String prompt) {
+        String answer = readLine(prompt + " (yes/no): ").trim().toLowerCase();
+        return answer.equals("yes") || answer.equals("y");
+    }
+
+    // ---------- add ----------
+
+    private static void registerMember() {
+        System.out.println("\n==== Register a new member ====");
+        String name = readLine("Enter member name: ");
+        String email = readLine("Enter member email: ");
+
+        try {
+            Member member = new Member(name, email);
+            library.registerMember(member);
+            System.out.println("Member registered successfully.");
+            member.displayDetails();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    private static void addBook() {
+        System.out.println("\n==== Add a new book ====");
+        String title = readLine("Enter book title: ");
+        String author = readLine("Enter author: ");
+
+        try {
+            Book book = new Book(title, author);
+            library.addItem(book);
+            System.out.println("Book added successfully.");
+            book.displayDetails();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    private static void addMagazine() {
+        System.out.println("\n==== Add a new magazine ====");
+        String title = readLine("Enter magazine name: ");
+        String publisher = readLine("Enter publisher: ");
+
+        try {
+            Magazine magazine = new Magazine(title, publisher);
+            library.addItem(magazine);
+            System.out.println("Magazine added successfully.");
+            magazine.displayDetails();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    // ---------- search ----------
+
+    private static void search() {
+        System.out.println("\n1. Search member");
+        System.out.println("2. Search item (book / magazine)");
+        int choice = readInt("Choice: ");
+
+        if (choice == 1) {
+            String id = readLine("Enter member ID (e.g. M0001): ");
+            Member member = library.findMemberById(id);
+            if (member == null) {
+                System.out.println("No member found with that ID.");
+            } else {
+                member.displayDetails();
+            }
+        } else if (choice == 2) {
+            String id = readLine("Enter item ID (e.g. B0001 or MGZ001): ");
+            LibraryItem item = library.findItemById(id);
+            if (item == null) {
+                System.out.println("No item found with that ID.");
+            } else {
+                item.displayDetails();
+            }
+        } else {
+            System.out.println("Invalid choice.");
+        }
+    }
+
+    // ---------- delete ----------
+
+    private static void delete() {
+        System.out.println("\n1. Delete member");
+        System.out.println("2. Delete item (book / magazine)");
+        int choice = readInt("Choice: ");
+
+        if (choice == 1) {
+            String id = readLine("Enter member ID: ");
+            Member member = library.findMemberById(id);
+            if (member == null) {
+                System.out.println("No member found with that ID.");
+                return;
+            }
+            member.displayDetails();
+            if (confirm("Delete this member?")) {
+                library.removeMember(id);
+                System.out.println("Member deleted.");
+            } else {
+                System.out.println("Nothing changed.");
+            }
+
+        } else if (choice == 2) {
+            String id = readLine("Enter item ID: ");
+            LibraryItem item = library.findItemById(id);
+            if (item == null) {
+                System.out.println("No item found with that ID.");
+                return;
+            }
+            item.displayDetails();
+            if (confirm("Delete this item?")) {
+                library.removeItem(id);
+                System.out.println("Item deleted.");
+            } else {
+                System.out.println("Nothing changed.");
+            }
+
+        } else {
+            System.out.println("Invalid choice.");
         }
     }
 }
